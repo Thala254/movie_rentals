@@ -21,10 +21,10 @@ export const Customer = model('Customer', new Schema({
 }));
 
 export const validateCustomer = (customer) => {
-  const schema = {
+  const schema = Joi.object({
     name: Joi.string().min(5).max(50).required(),
     telephone: Joi.string().min(5).max(50).required(),
     isGold: Joi.boolean(),
-  };
-  return Joi.validate(customer, schema);
+  });
+  return schema.validate(customer);
 };
