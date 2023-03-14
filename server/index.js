@@ -6,6 +6,9 @@ import cors from './startup/cors';
 import routes from './startup/routes';
 import getAccessKey from './startup/config';
 import validation from './startup/validation';
+import { logger } from './startup/logging';
+
+require('express-async-errors');
 
 const app = express();
 const port = env.PORT || config.get('port');
@@ -16,6 +19,6 @@ db();
 getAccessKey();
 validation();
 
-const server = app.listen(port, () => console.log(`Listening on port ${port}`));
+const server = app.listen(port, () => logger.info(`Listening on port ${port}`));
 
 export default server;

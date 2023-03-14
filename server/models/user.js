@@ -7,23 +7,26 @@ export const userSchema = new Schema({
   name: {
     type: String,
     required: true,
-    minLength: 2,
-    maxLength: 255,
+    minlength: 2,
+    maxlength: 255,
   },
   email: {
     type: String,
     required: true,
-    minLength: 5,
-    maxLength: 255,
+    minlength: 5,
+    maxlength: 255,
     unique: true,
   },
   password: {
     type: String,
     required: true,
-    minLength: 5,
-    maxLength: 1024,
+    minlength: 5,
+    maxlength: 1024,
   },
-  isAdmin: Boolean,
+  isAdmin: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 userSchema.methods.generateAuthToken = function() {

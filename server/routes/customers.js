@@ -14,9 +14,12 @@ router.post('/', [auth], async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(`Error: ${error.details[0].message}`);
 
-  const { name, isGold, telephone } = req.body;
+  const { name, telephone, isGold } = req.body;
 
-  const customer = new Customer({
+  let customer = await Customer.findOne({ telephone });
+  if (customer) return res.status(400).send('Customer already registered.');
+
+  customer = new Customer({
     name,
     telephone,
     isGold,
@@ -36,9 +39,10 @@ router.put('/:id', [auth], async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(`Error: ${error.details[0].message}`);
 
+  const { name, isGold, telephone } = req.body;
   const customer = await Customer.findByIdAndUpdate(
     req.params.id,
-    { name: req.body.name },
+    { name, isGold, telephone },
     { new: true },
   ).select('-__v');
 

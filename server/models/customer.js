@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { model, Schema } from 'mongoose';
 
-export const Customer = model('Customer', new Schema({
+export const customerSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -17,8 +17,11 @@ export const Customer = model('Customer', new Schema({
     required: true,
     minLength: 5,
     maxLength: 50,
+    unique: true,
   },
-}));
+});
+
+export const Customer = model('Customer', customerSchema);
 
 export const validateCustomer = (customer) => {
   const schema = Joi.object({

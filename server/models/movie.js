@@ -7,8 +7,8 @@ export const movieSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    minLenth: 5,
-    maxLength: 255,
+    minlength: 5,
+    maxlength: 255,
   },
   genre: {
     type: genreSchema,

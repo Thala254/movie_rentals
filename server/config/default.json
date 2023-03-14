@@ -2,5 +2,6 @@
   "jwtPrivateKey": "",
   "db": "",
   "port": "3500",
+  "LOG_LEVEL": "",
   "requiresAuth": true
 }

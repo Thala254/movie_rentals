@@ -1,16 +1,54 @@
 import Joi from 'joi';
 import moment from 'moment';
 import { model, Schema } from 'mongoose';
-import { userSchema } from './user';
-import { movieSchema } from './movie';
+import { customerSchema } from './customer';
+// import { movieSchema } from './movie';
 
 export const rentalSchema = new Schema({
   customer: {
-    type: userSchema,
+    /*type: new Schema({
+      name: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 50,
+      },
+      isGold: {
+        type: Boolean,
+        default: false,
+      },
+      telephone: {
+        type: String,
+        required: true,
+        minlength: 5,
+        maxlength: 50,
+      },
+    }),*/
+    type: customerSchema,
     required: true,
   },
   movie: {
-    type: movieSchema,
+    type: new Schema({
+      title: {
+        type: String,
+        required: true,
+        trim: true,
+        minlength: 5,
+        maxlength: 255,
+      },
+      dailyRentalRate: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 255,
+      },
+      quantity: {
+        type: Number,
+        min: 0,
+        max: 255,
+        required: true,
+      },
+    }),
     required: true,
   },
   dateOut: {
@@ -32,6 +70,7 @@ rentalSchema.statics.lookup = function (customerId, movieId) {
 };
 
 rentalSchema.methods.return = function () {
+  this.movie.quantity -= 1;
   this.dateReturned = new Date();
   const rentalDays = moment().diff(this.dateOut, 'days');
   this.rentalFee = rentalDays * this.movie.dailyRentalRate;
@@ -40,9 +79,9 @@ rentalSchema.methods.return = function () {
 export const Rental = model('Rental', rentalSchema);
 
 export const validateRental = (rental) => {
-  const schema = {
+  const schema = Joi.object({
     customerId: Joi.objectId().required(),
     movieId: Joi.objectId().required(),
-  };
-  return Joi.validate(rental, schema);
+  });
+  return schema.validate(rental);
 };
