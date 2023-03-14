@@ -68,7 +68,7 @@ export const morganMiddleware = morgan(
   },
   {
     stream: {
-      write: (message) => logger.http(`incoming-request ${message}`),
+      write: (message) => logger.http(`incoming-request ${message}`.trim()),
     },
   },
 );
