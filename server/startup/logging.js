@@ -29,12 +29,14 @@ export const logger = createLogger({
   format: combine(timestamp({ format: 'YYYY-MM-DD hh:mm:ss SSS A' }), json(), prettyPrint()),
   transports: [
     new transports.DailyRotateFile({
+      dirname: './logs',
       filename: 'combined-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
       maxSize: '5m',
     }),
     new transports.DailyRotateFile({
       level: 'error',
+      dirname: './logs',
       filename: 'app-error-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
       maxSize: '5m',
@@ -42,6 +44,7 @@ export const logger = createLogger({
     }),
     new transports.DailyRotateFile({
       level: 'info',
+      dirname: './logs',
       filename: 'app-info-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
       maxSize: '5m',
@@ -57,6 +60,7 @@ export const logger = createLogger({
   exceptionHandlers: [
     new transports.DailyRotateFile({
       level: 'error',
+      dirname: './logs',
       filename: 'uncaughtExceptions-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
       maxSize: '5m',

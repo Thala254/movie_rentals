@@ -4,7 +4,7 @@ import { logger } from './logging';
 
 export default function () {
   const db = config.get('db');
-  connect(db, { useNewUrlParser: true, useUnifiedTopology: true })
+  connect(db, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
     .then(() => logger.info(`Connected to ${db}...`))
     .catch((err) => logger.error(`Database is unreachable: ${err}`));
 }

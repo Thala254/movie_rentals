@@ -6,24 +6,6 @@ import { customerSchema } from './customer';
 
 export const rentalSchema = new Schema({
   customer: {
-    /*type: new Schema({
-      name: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 50,
-      },
-      isGold: {
-        type: Boolean,
-        default: false,
-      },
-      telephone: {
-        type: String,
-        required: true,
-        minlength: 5,
-        maxlength: 50,
-      },
-    }),*/
     type: customerSchema,
     required: true,
   },
