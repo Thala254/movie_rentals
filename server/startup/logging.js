@@ -3,6 +3,7 @@ import config from 'config';
 import { env } from 'process';
 import { transports, format, createLogger } from 'winston';
 import morgan from 'morgan';
+import 'winston-daily-rotate-file';
 import 'winston-mongodb';
 
 const {
@@ -15,12 +16,36 @@ const {
   printf,
 } = format;
 
+const errorFilter = format((info, opts) => {
+  return info.level === 'error' ? info : false;
+});
+
+const infoFilter = format((info, opts) => {
+  return info.level === 'info' ? info : false;
+});
+
 export const logger = createLogger({
+  level: config.get('LOG_LEVEL') || 'info',
+  format: combine(timestamp({ format: 'YYYY-MM-DD hh:mm:ss SSS A' }), json(), prettyPrint()),
   transports: [
-    new transports.File({
-      level: config.get('LOG_LEVEL') || 'error',
-      filename: 'combined.log',
-      format: combine(timestamp({ format: 'YYYY-MM-DD hh:mm:ss SSS A' }), json(), prettyPrint()),
+    new transports.DailyRotateFile({
+      filename: 'combined-%DATE%.log',
+      datePattern: 'YYYY-MM-DD',
+      maxSize: '5m',
+    }),
+    new transports.DailyRotateFile({
+      level: 'error',
+      filename: 'app-error-%DATE%.log',
+      datePattern: 'YYYY-MM-DD',
+      maxSize: '5m',
+      format: combine(errorFilter(), json()),
+    }),
+    new transports.DailyRotateFile({
+      level: 'info',
+      filename: 'app-info-%DATE%.log',
+      datePattern: 'YYYY-MM-DD',
+      maxSize: '5m',
+      format: combine(infoFilter(), json()),
     }),
     /*
     new transports.MongoDB({
@@ -30,9 +55,11 @@ export const logger = createLogger({
     */
   ],
   exceptionHandlers: [
-    new transports.File({
-      level: config.get('LOG_LEVEL') || 'error',
-      filename: 'uncaughtExceptions.log',
+    new transports.DailyRotateFile({
+      level: 'error',
+      filename: 'uncaughtExceptions-%DATE%.log',
+      datePattern: 'YYYY-MM-DD',
+      maxSize: '5m',
     }),
   ],
 });

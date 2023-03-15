@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { Genre, validateGenre } from '../models/genre';
 import auth from '../middleware/auth';
+import admin from '../middleware/admin';
 import validateObjectId from '../middleware/validateObjectId';
 
 const router = Router();
@@ -10,7 +11,7 @@ router.get('/', async (req, res) => {
   return res.send(genres);
 });
 
-router.post('/', [auth], async (req, res) => {
+router.post('/', [auth, admin], async (req, res) => {
   const { error } = validateGenre(req.body);
   if (error) return res.status(400).send(`Invalid genre: ${error.details[0].message}`);
 
@@ -30,7 +31,7 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
   return res.send(genre);
 });
 
-router.put('/:id', [auth, validateObjectId], async (req, res) => {
+router.put('/:id', [auth, admin, validateObjectId], async (req, res) => {
   const { error } = validateGenre(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -44,7 +45,7 @@ router.put('/:id', [auth, validateObjectId], async (req, res) => {
   return res.send(genre);
 });
 
-router.delete('/:id', [auth, validateObjectId], async (req, res) => {
+router.delete('/:id', [auth, admin, validateObjectId], async (req, res) => {
   const genre = await Genre.findByIdAndRemove(req.params.id).select('-__v');
   if (!genre) return res.status(404).send('Not found');
   return res.send(genre);

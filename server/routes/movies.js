@@ -3,6 +3,7 @@ import moment from 'moment';
 import { Movie, validateMovie } from '../models/movie';
 import { Genre } from '../models/genre';
 import auth from '../middleware/auth';
+import admin from '../middleware/admin';
 import validateObjectId from '../middleware/validateObjectId';
 
 const router = Router();
@@ -12,7 +13,7 @@ router.get('/', async (req, res) => {
   res.send(movies);
 });
 
-router.post('/', [auth], async (req, res) => {
+router.post('/', [auth, admin], async (req, res) => {
   const { error } = validateMovie(req.body);
   if (error) return res.status(400).send(`Invalid genre: ${error.details[0].message}`);
 
@@ -47,7 +48,7 @@ router.get('/:id', [auth, validateObjectId], async (req, res) => {
   return res.send(movie);
 });
 
-router.put('/:id', [auth, validateObjectId], async (req, res) => {
+router.put('/:id', [auth, admin, validateObjectId], async (req, res) => {
   const { error } = validateMovie(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -81,7 +82,7 @@ router.put('/:id', [auth, validateObjectId], async (req, res) => {
   return res.send(movie);
 });
 
-router.delete('/:id', [auth, validateObjectId], async (req, res) => {
+router.delete('/:id', [auth, admin, validateObjectId], async (req, res) => {
   const movie = await Movie.findByIdAndRemove(req.params.id).select('-__v');
   if (!movie) return res.status(404).send('Not found');
   return res.send(movie);

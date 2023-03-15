@@ -5,13 +5,14 @@ import { Rental, validateRental } from '../models/rental';
 import { Customer } from '../models/customer';
 import { Movie } from '../models/movie';
 import auth from '../middleware/auth';
+import admin from '../middleware/admin';
 import validateObjectId from '../middleware/validateObjectId';
 
 const router = Router();
 
 Fawn.init(mongoose);
 
-router.get('/', [auth], async (req, res) => {
+router.get('/', [auth, admin], async (req, res) => {
   const rentals = await Rental.find().select('-__v').sort('-dateOut');
   return res.send(rentals);
 });

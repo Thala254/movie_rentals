@@ -2,15 +2,17 @@ import { Router } from 'express';
 import _ from 'lodash';
 import { Customer, validateCustomer } from '../models/customer';
 import auth from '../middleware/auth';
+import admin from '../middleware/admin';
+import validateObjectId from '../middleware/validateObjectId';
 
 const router = Router();
 
-router.get('/', [auth], async (req, res) => {
+router.get('/', [auth, admin], async (req, res) => {
   const customers = await Customer.find().select('-__v').sort('name');
   return res.send(customers);
 });
 
-router.post('/', [auth], async (req, res) => {
+router.post('/', [auth, admin], async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(`Error: ${error.details[0].message}`);
 
@@ -29,13 +31,13 @@ router.post('/', [auth], async (req, res) => {
   return res.send(_.pick(customer, ['name', 'isGold', 'telephone', '_id']));
 });
 
-router.get('/:id', [auth], async (req, res) => {
+router.get('/:id', [auth, admin, validateObjectId], async (req, res) => {
   const customer = await Customer.findById(req.params.id).select('-__v');
   if (!customer) return res.status(404).send('Not found');
   return res.send(customer);
 });
 
-router.put('/:id', [auth], async (req, res) => {
+router.put('/:id', [auth, admin, validateObjectId], async (req, res) => {
   const { error } = validateCustomer(req.body);
   if (error) return res.status(400).send(`Error: ${error.details[0].message}`);
 
@@ -50,7 +52,7 @@ router.put('/:id', [auth], async (req, res) => {
   return res.send(customer);
 });
 
-router.delete('/:id', [auth], async (req, res) => {
+router.delete('/:id', [auth, admin, validateObjectId], async (req, res) => {
   const customer = await Customer.findByIdAndRemove(req.params.id).select('-__v');
   if (!customer) return res.status(404).send('Not found');
   return res.send(customer);
