@@ -1,7 +1,7 @@
 import express from 'express';
-import router from '../routes';
-import error from '../middleware/error';
-import { morganMiddleware } from './logging';
+import router from '../routes/index.js';
+import error from '../middleware/error.js';
+import { morganMiddleware } from './logging.js';
 
 const {
   users,

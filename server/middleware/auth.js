@@ -1,5 +1,7 @@
-import { verify } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import config from 'config';
+
+const { verify } = jwt;
 
 export default function (req, res, next) {
   if (!config.get('requiresAuth')) return next();

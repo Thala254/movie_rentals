@@ -4,9 +4,11 @@
   "description": "An API that serves the movie rental service client",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose -o --forceExit --detectOpenHandles",
-    "start-server": "nodemon --exec babel-node --presets @babel/preset-env index",
-    "seed": "node seed.js"
+    "test": "jest --verbose --watchAll",
+    "start": "node server",
+    "start-server": "nodemon --exec babel-node --presets @babel/preset-env server",
+    "seed": "node seed.js",
+    "check-lint": "./node_modules/.bin/eslint [!node_modules]*/*.js *.js tests/*/*/*.js"
   },
   "author": "Kiprotich Brian",
   "license": "ISC",
@@ -41,5 +43,6 @@
     "jest": "^29.5.0",
     "nodemon": "^2.0.2",
     "supertest": "^6.3.3"
-  }
+  },
+  "type": "module"
 }

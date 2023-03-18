@@ -4,20 +4,23 @@
 /* eslint-disable jest/no-truthy-falsy */
 /* eslint-disable jest/prefer-expect-assertions */
 import request from 'supertest';
-import { Types } from 'mongoose';
+import { Types, disconnect } from 'mongoose';
 import { Movie } from '../../../models/movie';
 import { Genre } from '../../../models/genre';
 import { User } from '../../../models/user';
-import app from '../../../server';
+import app from '../../../app';
 
 let server;
 
 describe('/api/movies', () => {
-  beforeEach(() => { server = app.listen(3504); });
+  beforeEach(() => { server = app; });
 
   afterEach(async () => {
-    await server.close();
     await Movie.deleteMany({});
+  });
+
+  afterAll(() => {
+    disconnect();
   });
 
   describe('GET /', () => {
@@ -161,25 +164,25 @@ describe('/api/movies', () => {
       expect(res.status).toBe(400);
     });
 
-    it.skip('returns a 400 status if inStock is less than 0', async () => {
+    it('returns a 400 status if inStock is less than 0', async () => {
       inStock = -5;
       const res = await exec();
       expect(res.status).toBe(400);
     });
 
-    it.skip('returns a 400 status if inStock is more than 255', async () => {
+    it('returns a 400 status if inStock is more than 255', async () => {
       inStock = 300;
       const res = await exec();
       expect(res.status).toBe(400);
     });
 
-    it.skip('returns a 400 status if dailyRentalRate is less than 0', async () => {
+    it('returns a 400 status if dailyRentalRate is less than 0', async () => {
       dailyRentalRate = -2;
       const res = await exec();
       expect(res.status).toBe(400);
     });
 
-    it.skip('returns a 400 status if dailyRentalRate is more than 255', async () => {
+    it('returns a 400 status if dailyRentalRate is more than 255', async () => {
       dailyRentalRate = 300;
       const res = await exec();
       expect(res.status).toBe(400);

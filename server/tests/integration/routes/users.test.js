@@ -3,9 +3,10 @@
 /* eslint-disable jest/no-truthy-falsy */
 /* eslint-disable jest/prefer-expect-assertions */
 import request from 'supertest';
+import { disconnect } from 'mongoose';
 import { hash, genSalt } from 'bcrypt';
 import { User } from '../../../models/user';
-import app from '../../../server';
+import app from '../../../app';
 
 let server;
 
@@ -14,11 +15,14 @@ describe('/api/users', () => {
   let email;
   let password;
 
-  beforeEach(() => { server = app.listen(3507); });
+  beforeEach(() => { server = app; });
 
   afterEach(async () => {
     await User.deleteMany({});
-    await server.close();
+  });
+
+  afterAll(() => {
+    disconnect();
   });
 
   describe('POST /', () => {

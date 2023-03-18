@@ -1,7 +1,10 @@
 import Joi from 'joi';
 import config from 'config';
-import { sign } from 'jsonwebtoken';
-import { model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
+
+const { model, Schema } = mongoose;
+const { sign } = jwt;
 
 export const userSchema = new Schema({
   name: {

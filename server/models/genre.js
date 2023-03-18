@@ -1,5 +1,7 @@
 import Joi from 'joi';
-import { model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
+
+const { model, Schema } = mongoose;
 
 export const genreSchema = new Schema({
   name: {

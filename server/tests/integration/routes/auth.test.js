@@ -3,9 +3,10 @@
 /* eslint-disable jest/no-truthy-falsy */
 /* eslint-disable jest/prefer-expect-assertions */
 import request from 'supertest';
+import { disconnect } from 'mongoose';
 import { hash, genSalt } from 'bcrypt';
 import { User } from '../../../models/user';
-import app from '../../../server';
+import app from '../../../app';
 
 let server;
 
@@ -18,7 +19,7 @@ describe('POST /api/auth', () => {
     .send({ email, password });
 
   beforeEach(async () => {
-    server = app.listen(3501);
+    server = app;
     email = 'test@test.com';
     password = 'abcd1234';
     await new User({
@@ -30,7 +31,11 @@ describe('POST /api/auth', () => {
 
   afterEach(async () => {
     await User.deleteMany({});
-    await server.close();
+    // await server.close();
+  });
+
+  afterAll(() => {
+    disconnect();
   });
 
   it('returns a status of 400 if missing email', async () => {

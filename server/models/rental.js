@@ -1,8 +1,9 @@
 import Joi from 'joi';
 import moment from 'moment';
-import { model, Schema } from 'mongoose';
-import { customerSchema } from './customer';
-// import { movieSchema } from './movie';
+import mongoose from 'mongoose';
+import { customerSchema } from './customer.js';
+
+const { model, Schema } = mongoose;
 
 export const rentalSchema = new Schema({
   customer: {

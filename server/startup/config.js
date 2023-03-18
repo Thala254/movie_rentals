@@ -1,5 +1,5 @@
 import config from 'config';
-import { logger } from './logging';
+import { logger } from './logging.js';
 
 const getAccess = () => {
   try {

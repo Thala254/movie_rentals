@@ -1,91 +1,17 @@
 import { Router } from 'express';
-import Fawn from 'fawn';
-import mongoose from 'mongoose';
-import { Rental, validateRental } from '../models/rental';
-import { Customer } from '../models/customer';
-import { Movie } from '../models/movie';
-import auth from '../middleware/auth';
-import admin from '../middleware/admin';
-import validateObjectId from '../middleware/validateObjectId';
+import auth from '../middleware/auth.js';
+import admin from '../middleware/admin.js';
+import validateObjectId from '../middleware/validateObjectId.js';
+import {
+  getAll,
+  getOne,
+  create,
+} from '../controllers/rentals.js';
 
 const router = Router();
 
-Fawn.init(mongoose);
-
-router.get('/', [auth, admin], async (req, res) => {
-  const rentals = await Rental.find().select('-__v').sort('-dateOut');
-  return res.send(rentals);
-});
-
-router.post('/', [auth], async (req, res) => {
-  const { error } = validateRental(req.body);
-  if (error) return res.status(400).send(`Error: ${error.details[0].message}`);
-
-  const { customerId, movieId } = req.body;
-  const customer = await Customer.findById(customerId);
-  if (!customer) return res.status(400).send('Invalid Customer.');
-
-  const movie = await Movie.findById(movieId);
-  if (!movie) return res.status(400).send('Invalid movie.');
-
-  if (movie.inStock === 0) return res.status(400).send('Movie out of stock');
-
-  let rental = await Rental.lookup(customerId, movieId);
-  if (rental) {
-    try {
-      await new Fawn.Task()
-        .update(
-          'rentals',
-          { _id: rental._id },
-          {
-            $set: { dateOut: new Date() },
-            $inc: { 'movie.quantity': 1 },
-          },
-        )
-        .update(
-          'movies',
-          { _id: movie._id },
-          { $inc: { inStock: -1 } },
-        )
-        .run();
-      const updatedRental = await Rental.findById(rental._id);
-      return res.send(updatedRental);
-    } catch (err) {
-      return res.status(500).send(`Something failed: ${err}`);
-    }
-  }
-
-  rental = new Rental({
-    customer: {
-      ...customer,
-    },
-    movie: {
-      _id: movie._id,
-      title: movie.title,
-      dailyRentalRate: movie.dailyRentalRate,
-      quantity: 1,
-    },
-  });
-
-  try {
-    await new Fawn.Task()
-      .save('rentals', rental)
-      .update(
-        'movies',
-        { _id: movie._id },
-        { $inc: { inStock: -1 } },
-      )
-      .run();
-    return res.send(rental);
-  } catch (err) {
-    return res.status(500).send(`Something failed: ${err}`);
-  }
-});
-
-router.get('/:id', [auth, validateObjectId], async (req, res) => {
-  const rental = await Rental.findById(req.params.id).select('-__v');
-  if (!rental) return res.status(404).send('Not found');
-  return res.send(rental);
-});
+router.get('/', [auth, admin], getAll);
+router.post('/', auth, create);
+router.get('/:id', [auth, validateObjectId], getOne);
 
 export default router;

@@ -4,11 +4,11 @@
 /* eslint-disable jest/prefer-expect-assertions */
 import moment from 'moment';
 import request from 'supertest';
-import { Types } from 'mongoose';
+import { Types, disconnect } from 'mongoose';
 import { Rental } from '../../../models/rental';
 import { Movie } from '../../../models/movie';
 import { User } from '../../../models/user';
-import app from '../../../server';
+import app from '../../../app';
 
 describe('/api/returns', () => {
   let server;
@@ -24,7 +24,7 @@ describe('/api/returns', () => {
     .send({ customerId, movieId });
 
   beforeEach(async () => {
-    server = app.listen(3506);
+    server = app;
     customerId = Types.ObjectId();
     movieId = Types.ObjectId();
     token = new User().generateAuthToken();
@@ -56,9 +56,12 @@ describe('/api/returns', () => {
   });
 
   afterEach(async () => {
-    await server.close();
     await Rental.deleteMany({});
     await Movie.deleteMany({});
+  });
+
+  afterAll(() => {
+    disconnect();
   });
 
   it('should return 401 if user is not logged in', async () => {
@@ -121,10 +124,9 @@ describe('/api/returns', () => {
 
   it('should return the rental if input is valid', async () => {
     const res = await exec();
-    const rentalInDb = await Rental.findById(rental._id);
+    await Rental.findById(rental._id);
     expect(res.status).toBe(200);
     expect(Object.keys(res.body)).toStrictEqual(expect.arrayContaining(['dateOut', 'dateReturned', 'rentalFee', 'customer', 'movie']));
-    // expect(JSON.parse(res.text)).toMatchObject(rentalInDb);
     expect(JSON.parse(res.text)).not.toBeNull();
   });
 });

@@ -3,21 +3,24 @@
 /* eslint-disable jest/no-truthy-falsy */
 /* eslint-disable jest/prefer-expect-assertions */
 import request from 'supertest';
-import { Types } from 'mongoose';
+import { Types, disconnect } from 'mongoose';
 import { Rental } from '../../../models/rental';
 import { User } from '../../../models/user';
 import { Customer } from '../../../models/customer';
 import { Movie } from '../../../models/movie';
-import app from '../../../server';
+import app from '../../../app';
 
 let server;
 
 describe('/api/rentals', () => {
-  beforeEach(() => { server = app.listen(3505); });
+  beforeEach(() => { server = app; });
 
   afterEach(async () => {
     await Rental.deleteMany({});
-    await server.close();
+  });
+
+  afterAll(() => {
+    disconnect();
   });
 
   describe('GET /', () => {

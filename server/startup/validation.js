@@ -1,5 +1,6 @@
 import Joi from 'joi';
+import objectId from 'joi-objectid';
 
 export default function () {
-  Joi.objectId = require('joi-objectid')(Joi);
+  Joi.objectId = objectId(Joi);
 }

@@ -3,19 +3,22 @@
 /* eslint-disable jest/no-truthy-falsy */
 /* eslint-disable jest/prefer-expect-assertions */
 import request from 'supertest';
-import { Types } from 'mongoose';
+import { Types, disconnect } from 'mongoose';
 import { Genre } from '../../../models/genre';
 import { User } from '../../../models/user';
-import app from '../../../server';
+import app from '../../../app';
 
 let server;
 
 describe('/api/genres', () => {
-  beforeEach(() => { server = app.listen(3503); });
+  beforeEach(() => { server = app; });
 
   afterEach(async () => {
     await Genre.deleteMany({});
-    await server.close();
+  });
+
+  afterAll(() => {
+    disconnect();
   });
 
   describe('GET /', () => {

@@ -1,18 +1,7 @@
-import express from 'express';
-import db from './startup/db';
-import cors from './startup/cors';
-import routes from './startup/routes';
-import getAccessKey from './startup/config';
-import validation from './startup/validation';
+import { env } from 'process';
+import config from 'config';
+import app from './app.js';
+import { logger } from './startup/logging.js';
 
-require('express-async-errors');
-
-const app = express();
-
-cors(app);
-routes(app);
-db();
-getAccessKey();
-validation();
-
-export default app;
+const port = config.get('port') || env.PORT;
+app.listen(port, () => logger.info(`Listening on port ${port}`));

@@ -1,61 +1,21 @@
 import { Router } from 'express';
-import _ from 'lodash';
-import { Customer, validateCustomer } from '../models/customer';
-import auth from '../middleware/auth';
-import admin from '../middleware/admin';
-import validateObjectId from '../middleware/validateObjectId';
+import auth from '../middleware/auth.js';
+import admin from '../middleware/admin.js';
+import validateObjectId from '../middleware/validateObjectId.js';
+import {
+  getAll,
+  getOne,
+  create,
+  update,
+  remove,
+} from '../controllers/customers.js';
 
 const router = Router();
 
-router.get('/', [auth, admin], async (req, res) => {
-  const customers = await Customer.find().select('-__v').sort('name');
-  return res.send(customers);
-});
-
-router.post('/', [auth, admin], async (req, res) => {
-  const { error } = validateCustomer(req.body);
-  if (error) return res.status(400).send(`Error: ${error.details[0].message}`);
-
-  const { name, telephone, isGold } = req.body;
-
-  let customer = await Customer.findOne({ telephone });
-  if (customer) return res.status(400).send('Customer already registered.');
-
-  customer = new Customer({
-    name,
-    telephone,
-    isGold,
-  });
-
-  await customer.save();
-  return res.send(_.pick(customer, ['name', 'isGold', 'telephone', '_id']));
-});
-
-router.get('/:id', [auth, admin, validateObjectId], async (req, res) => {
-  const customer = await Customer.findById(req.params.id).select('-__v');
-  if (!customer) return res.status(404).send('Not found');
-  return res.send(customer);
-});
-
-router.put('/:id', [auth, admin, validateObjectId], async (req, res) => {
-  const { error } = validateCustomer(req.body);
-  if (error) return res.status(400).send(`Error: ${error.details[0].message}`);
-
-  const { name, isGold, telephone } = req.body;
-  const customer = await Customer.findByIdAndUpdate(
-    req.params.id,
-    { name, isGold, telephone },
-    { new: true },
-  ).select('-__v');
-
-  if (!customer) return res.status(404).send('Not found');
-  return res.send(customer);
-});
-
-router.delete('/:id', [auth, admin, validateObjectId], async (req, res) => {
-  const customer = await Customer.findByIdAndRemove(req.params.id).select('-__v');
-  if (!customer) return res.status(404).send('Not found');
-  return res.send(customer);
-});
+router.get('/', [auth, admin], getAll);
+router.post('/', [auth, admin], create);
+router.get('/:id', [auth, admin, validateObjectId], getOne);
+router.put('/:id', [auth, admin, validateObjectId], update);
+router.delete('/:id', [auth, admin, validateObjectId], remove);
 
 export default router;
