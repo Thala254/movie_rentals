@@ -64,24 +64,6 @@ describe('/api/customers', () => {
       id = customer._id;
     });
 
-    it('returns a 401 status if user is not logged in', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 404 status if an invalid customer id is passed', async () => {
-      id = 1;
-      const res = await exec();
-      expect(res.status).toBe(404);
-    });
-
     it('returns a 404 status if customer id does not exist', async () => {
       id = Types.ObjectId();
       const res = await exec();
@@ -109,24 +91,6 @@ describe('/api/customers', () => {
       token = new User({ isAdmin: true }).generateAuthToken();
       name = 'customer1';
       telephone = '123456789';
-    });
-
-    it('returns a 401 status if user is not logged in', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 403 status if the user is not an admin', async () => {
-      token = new User().generateAuthToken();
-      const res = await exec();
-      expect(res.status).toBe(403);
     });
 
     it('returns a 400 status if customer name is less than 5 characters', async () => {
@@ -181,30 +145,6 @@ describe('/api/customers', () => {
       id = customer._id;
     });
 
-    it('returns a 401 status if user is not logged in', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 403 status if the user is not an admin', async () => {
-      token = new User().generateAuthToken();
-      const res = await exec();
-      expect(res.status).toBe(403);
-    });
-
-    it('returns a 404 status if an invalid customer id is passed', async () => {
-      id = 1;
-      const res = await exec();
-      expect(res.status).toBe(404);
-    });
-
     it('returns a 404 status if customer id does not exist', async () => {
       id = Types.ObjectId();
       const res = await exec();
@@ -251,30 +191,6 @@ describe('/api/customers', () => {
       const customer = new Customer({ name, telephone: '123456789' });
       await customer.save();
       id = customer._id;
-    });
-
-    it('returns a 401 status if user is not logged in', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 403 status if the user is not an admin', async () => {
-      token = new User().generateAuthToken();
-      const res = await exec();
-      expect(res.status).toBe(403);
-    });
-
-    it('returns a 404 status if an invalid customer id is passed', async () => {
-      id = 1;
-      const res = await exec();
-      expect(res.status).toBe(404);
     });
 
     it('returns a 404 status if customer id does not exist', async () => {

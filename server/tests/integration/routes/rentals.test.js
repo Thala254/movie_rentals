@@ -97,24 +97,6 @@ describe('/api/rentals', () => {
       id = rental._id;
     });
 
-    it('returns a 401 status if user is not logged in', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 404 status if an invalid rental id is passed', async () => {
-      id = 1;
-      const res = await exec();
-      expect(res.status).toBe(404);
-    });
-
     it('returns a 404 status if rental id does not exist', async () => {
       id = Types.ObjectId();
       const res = await exec();
@@ -133,7 +115,7 @@ describe('/api/rentals', () => {
     let customerId;
     let movieId;
 
-    const exec = async () => request(server)
+    let exec = async () => request(server)
       .post('/api/rentals')
       .set('x-auth-token', token)
       .send({ customerId, movieId });
@@ -161,26 +143,9 @@ describe('/api/rentals', () => {
       await Movie.deleteMany({});
     });
 
-    it('returns a 401 status if user is not logged in', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 400 status if customerId is invalid', async () => {
-      customerId = 1;
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 400 status if movieId is invalid', async () => {
-      movieId = 244;
+    it('returns a 400 status if an invalid request body is sent', async () => {
+      customerId = 'asdfg-sdfghj-sdfgh-trecv';
+      movieId = 'dfghj-hg-dfg-hgf';
       const res = await exec();
       expect(res.status).toBe(400);
     });

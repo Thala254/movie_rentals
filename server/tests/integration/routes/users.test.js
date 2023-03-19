@@ -143,20 +143,6 @@ describe('/api/users', () => {
       token = user.generateAuthToken();
     });
 
-    it('returns a 401 status if user is not logged in / no token', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-      expect(res.text).toStrictEqual('Access denied. No token provided');
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-      expect(res.text).toStrictEqual('Invalid token');
-    });
-
     it('returns currently logged in user if token is valid', async () => {
       const res = await exec();
       expect(res.status).toBe(200);

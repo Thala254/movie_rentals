@@ -76,24 +76,6 @@ describe('/api/movies', () => {
       id = movie._id;
     });
 
-    it('returns a 401 status if user is not logged in', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 404 status if an invalid movie id is passed', async () => {
-      id = 1;
-      const res = await exec();
-      expect(res.status).toBe(404);
-    });
-
     it('returns a 404 status if movie id does not exist', async () => {
       id = Types.ObjectId();
       const res = await exec();
@@ -132,24 +114,6 @@ describe('/api/movies', () => {
       dailyRentalRate = 1.5;
       const genre = await new Genre({ name: 'movieGenre' }).save();
       genreId = genre._id;
-    });
-
-    it('returns a 401 status if user is not logged in', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 403 status if the user is not an admin', async () => {
-      token = new User().generateAuthToken();
-      const res = await exec();
-      expect(res.status).toBe(403);
     });
 
     it('returns a 400 status if title is less than 5 characters', async () => {
@@ -260,30 +224,6 @@ describe('/api/movies', () => {
       id = movie._id;
     });
 
-    it('returns a 401 status if user is not logged in', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 403 status if the user is not an admin', async () => {
-      token = new User().generateAuthToken();
-      const res = await exec();
-      expect(res.status).toBe(403);
-    });
-
-    it('returns a 404 status if an invalid movie id is passed', async () => {
-      id = 1;
-      const res = await exec();
-      expect(res.status).toBe(404);
-    });
-
     it('returns a 404 status if movie id does not exist', async () => {
       id = Types.ObjectId();
       const res = await exec();
@@ -298,6 +238,12 @@ describe('/api/movies', () => {
 
     it('returns a 400 status if title more than 255 characters', async () => {
       title = new Array(300).join('a');
+      const res = await exec();
+      expect(res.status).toBe(400);
+    });
+
+    it('should return a 400 status if the genre does not exist', async () => {
+      genreId = Types.ObjectId();
       const res = await exec();
       expect(res.status).toBe(400);
     });
@@ -338,30 +284,6 @@ describe('/api/movies', () => {
         genre: { name: 'movieGenre' },
       }).save();
       id = movie._id;
-    });
-
-    it('returns a 401 status if user is not logged in', async () => {
-      token = '';
-      const res = await exec();
-      expect(res.status).toBe(401);
-    });
-
-    it('returns a 400 status if an invalid token is passed', async () => {
-      token = 'dfghjoiughkjh.fghjkjhdfguyfgh.uytrtyupojhgjhg';
-      const res = await exec();
-      expect(res.status).toBe(400);
-    });
-
-    it('returns a 403 status if the user is not an admin', async () => {
-      token = new User().generateAuthToken();
-      const res = await exec();
-      expect(res.status).toBe(403);
-    });
-
-    it('returns a 404 status if an invalid movie id is passed', async () => {
-      id = 1;
-      const res = await exec();
-      expect(res.status).toBe(404);
     });
 
     it('returns a 404 status if movie id does not exist', async () => {

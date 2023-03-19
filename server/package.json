@@ -4,7 +4,7 @@
   "description": "An API that serves the movie rental service client",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose --watchAll",
+    "test": "jest --verbose --watchAll --coverage",
     "start": "node server",
     "start-server": "nodemon --exec babel-node --presets @babel/preset-env server",
     "seed": "node seed.js",
