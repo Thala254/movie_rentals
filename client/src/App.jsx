@@ -4,6 +4,7 @@ import NavBar from './components/navBar';
 import Movies from './components/movies';
 import MovieForm from './components/movieForm';
 import Rentals from './components/rentals';
+import RentalForm from './components/rentalForm';
 import Customers from './components/customers';
 import CustomerForm from './components/customerForm';
 import User from './components/user';
@@ -36,6 +37,7 @@ const App = () => {
         </Route>
         <Route element={<ProtectedRoute isAllowed={!!user} />}>
           <Route path='rentals' element={<Rentals />} />
+          <Route path='rentals/:id' element={<RentalForm />} />
           <Route path='profile' element={<User />} />
         </Route>
         <Route path='login' element={<Login />} />
