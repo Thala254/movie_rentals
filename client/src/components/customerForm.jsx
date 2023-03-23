@@ -7,8 +7,9 @@ import { getCustomer, saveCustomer } from '../services/customerService';
 class CustomerForm extends Form {
   state = {
     data: {
+      //_id: '',
       name: '',
-      phone: '',
+      telephone: '',
       isGold: '',
     },
     errors: {},
@@ -54,7 +55,7 @@ class CustomerForm extends Form {
         <h1>Customer Form</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput('name', 'Name')}
-          {this.renderSelect('telephone', 'Telephone')}
+          {this.renderInput('telephone', 'Telephone')}
           {this.renderInput('isGold', 'isGold')}
           {this.renderButton('Save')}
         </form>

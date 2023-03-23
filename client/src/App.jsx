@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Fragment } from "react";
-import {Routes, Route, useNavigate, createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {Routes, Route } from 'react-router-dom';
 import NavBar from './components/navBar';
 import Movies from './components/movies';
 import MovieForm from './components/movieForm';
@@ -12,6 +12,7 @@ import Register from './components/register';
 import Logout from './components/logout';
 import ErrorPage from './components/notFound'
 import auth from './services/authService';
+import ProtectedRoute from './components/common/protectedRoute';
 import './App.css';
 
 const App = () => {
@@ -22,65 +23,27 @@ const App = () => {
     setUser(currentUser);
   }, []);
 
-  const router = createBrowserRouter([
-    {
-      path: '/',
-      element: <NavBar user={user} />,
-      children: [
-        {
-          index: true,
-          path: 'movies',
-          element: <Movies user={user} />,
-        },
-        {
-          path: 'movies/:id',
-          element: <MovieForm />, 
-        },
-        {
-          path: 'register',
-          element: <Register />, 
-        },
-
-        {
-          path: 'login',
-          element: <Login />,
-        },
-        {
-          path: 'logout',
-          element: <Logout />
-        },
-        {
-          path: 'customers',
-          element: <Customers user={user} />,
-        },
-        {
-          path: 'customers/:id',
-          element: <CustomerForm />,
-        },
-        {
-          path: 'rentals',
-          element: <Rentals />,
-        },
-        {
-          path: 'profile',
-          element: <User />,
-        },
-      ],
-      errorElement: <ErrorPage />,
-    },
-  ]);
-
   return (
-    <RouterProvider router={router} />
-    /*
-    <Routes>
-        <Route path='/' element={<NavBar user={user} />} />
+    <Fragment>
+      <NavBar user={user} /> 
+      <Routes>
+        <Route index element={<Movies user={user} />} />
         <Route path='movies' element={<Movies user={user} />}/>
-        <Route path=':id' element={<MovieForm />} />
+        <Route path='movies/:id' element={<MovieForm />} />
+        <Route element={<ProtectedRoute isAllowed={!!user && user.isAdmin} redirectPath='/' />}>
+          <Route path='customers' element={<Customers user={user} />} />
+          <Route path='customers/:id' element={<CustomerForm />} />
+        </Route>
+        <Route element={<ProtectedRoute isAllowed={!!user} />}>
+          <Route path='rentals' element={<Rentals />} />
+          <Route path='profile' element={<User />} />
+        </Route>
         <Route path='login' element={<Login />} />
+        <Route path='register' element={<Register />} />
         <Route path='logout' element={<Logout />} />
-    </Routes>
-    */
+        <Route path='*' element={<ErrorPage />} />
+      </Routes>
+    </Fragment>
   );
 };
 

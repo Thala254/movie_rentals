@@ -12,7 +12,7 @@ class CustomersTable extends Component {
         <Link to={`/customers/${customer._id}`}>{customer.name}</Link>
       ),
     },
-    { path: 'phone', label: 'Telephone' },
+    { path: 'telephone', label: 'Telephone' },
     {
       path: 'isGold',
       label: 'isGold',
@@ -24,7 +24,7 @@ class CustomersTable extends Component {
     key: 'delete',
     content: (customer) => (
       <button
-        onClick={() => this.props.OnDelete(customer)}
+        onClick={() => this.props.onDelete(customer)}
         className='btn btn-danger btn-sm'
       >
         Delete
