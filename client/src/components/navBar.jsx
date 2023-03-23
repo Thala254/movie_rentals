@@ -28,9 +28,11 @@ const NavBar = ({ user }) => {
           <div className='navbar-nav'>
             <NavLink className='nav-item nav-link' to='/movies'>Movies</NavLink>
             {currentUser?.isAdmin && (
-              <NavLink className='nav-item nav-link' to='/customers'>Customers</NavLink>
+              <Fragment>
+                <NavLink className='nav-item nav-link' to='/customers'>Customers</NavLink>
+                <NavLink className='nav-item nav-link' to='/rentals'>Rentals</NavLink>
+              </Fragment>
             )}
-            <NavLink className='nav-item nav-link' to='/rentals'>Rentals</NavLink>
             {!currentUser && (
               <Fragment>
                 <NavLink className='nav-item nav-link' to='/login'>Login</NavLink>

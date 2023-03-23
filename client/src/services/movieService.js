@@ -1,11 +1,11 @@
 import http from './httpService';
 import { apiUrl } from '../config.json';
 
-const apiEndPoint = apiUrl + '/movies';
+const apiEndpoint = apiUrl + '/movies';
 
-const movieUrl = (id) => `${apiEndPoint}/${id}`;
+const movieUrl = (id) => `${apiEndpoint}/${id}`;
 
-export const getMovies = () => http.get(apiEndPoint);
+export const getMovies = () => http.get(apiEndpoint);
 
 export const getMovie = (id) => http.get(movieUrl(id));
 
@@ -16,7 +16,7 @@ export const saveMovie = (movie) => {
     return http.put(movieUrl(movie._id), body);
   }
 
-  return http.post(apiEndPoint, movie);
+  return http.post(apiEndpoint, movie);
 };
 
 export const deleteMovie = (id) => http.delete(movieUrl(id));

@@ -1,11 +1,11 @@
 import http from './httpService';
 import { apiUrl } from '../config.json';
 
-const apiEndPoint = apiUrl + '/genres';
+const apiEndpoint = apiUrl + '/genres';
 
-const genreUrl = (id) => `${apiEndPoint}/${id}`;
+const genreUrl = (id) => `${apiEndpoint}/${id}`;
 
-export const getGenres = () => http.get(apiEndPoint);
+export const getGenres = () => http.get(apiEndpoint);
 
 export const getGenre = (id) => http.get(genreUrl(id));
 
