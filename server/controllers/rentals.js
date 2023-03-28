@@ -81,3 +81,10 @@ export const getOne = async (req, res) => {
   if (!rental) return res.status(404).send('Not found');
   return res.send(rental);
 };
+
+export const remove = async (req, res) => {
+  const rental = await Rental.findById(req.params.id).select('-__v');
+  if (!rental) return res.status(404).send('Not found');
+  await Rental.deleteOne({ _id: rental._id });
+  return res.send(rental);
+};

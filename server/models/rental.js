@@ -56,7 +56,7 @@ rentalSchema.methods.return = function () {
   this.movie.quantity -= 1;
   this.dateReturned = new Date();
   const rentalDays = moment().diff(this.dateOut, 'days');
-  this.rentalFee = rentalDays * this.movie.dailyRentalRate;
+  this.rentalFee = Math.round(rentalDays * this.movie.dailyRentalRate);
 };
 
 export const Rental = model('Rental', rentalSchema);
