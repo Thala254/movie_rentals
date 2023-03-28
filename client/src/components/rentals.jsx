@@ -5,7 +5,7 @@ import _ from 'lodash';
 import RentalsTable from './rentalsTable';
 import SearchBox from './searchBox';
 import Pagination from './common/pagination';
-import { getRentals, getRental } from '../services/rentalService';
+import { getRentals, getRental, deleteRental } from '../services/rentalService';
 import paginate from '../utils/paginate';
 
 class Rentals extends Component {
@@ -26,14 +26,14 @@ class Rentals extends Component {
     const originalRentals = this.state.rentals;
     const rentals = originalRentals.filter((r) => r._id !== rental._id);
     this.setState({ rentals });
-    /*
+    
     try {
       await deleteRental(rental._id);
     } catch (ex) {
       if (ex.response && ex.response.status === 404) toast.error('This rental has already been deleted.');
       this.setState({ rentals: originalRentals });
     }
-    */
+    
   };
 
   handlePageChange = (page) => this.setState({ currentPage: page });

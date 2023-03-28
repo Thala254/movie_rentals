@@ -31,12 +31,12 @@ const App = () => {
         <Route index element={<Movies user={user} />} />
         <Route path='movies' element={<Movies user={user} />}/>
         <Route element={<ProtectedRoute isAllowed={!!user} redirectPath='/' />}>
-          <Route path='movies/:id' element={<MovieForm />} />
+          <Route path='movies/:id' element={<MovieForm user={user} />} />
         </Route>
         <Route element={<ProtectedRoute isAllowed={!!user && user.isAdmin} redirectPath='/' />}>
           <Route path='customers' element={<Customers user={user} />} />
           <Route path='customers/:id' element={<CustomerForm />} />
-          <Route path='rentals' element={<Rentals />} />
+          <Route path='rentals' element={<Rentals user={user} />} />
           <Route path='rentals/:id' element={<RentalForm />} />
         </Route>
         <Route element={<ProtectedRoute isAllowed={!!user} />}>

@@ -60,6 +60,7 @@ class MovieForm extends Form {
   };
 
   render() {
+    const { user } = this.props;
     return (
       <div className='container'>
         <h1>Movie Form</h1>
@@ -68,7 +69,7 @@ class MovieForm extends Form {
           {this.renderSelect('genreId', 'Genre', this.state.genres)}
           {this.renderInput('inStock', 'Number in Stock', 'number')}
           {this.renderInput('dailyRentalRate', 'Rate')}
-          {this.renderButton('Save')}
+          {user.isAdmin && this.renderButton('Save')}
         </form>
       </div>
     );

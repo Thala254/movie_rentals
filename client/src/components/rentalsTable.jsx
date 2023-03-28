@@ -7,14 +7,12 @@ class RentalsTable extends Component {
   columns = [
     {
       path: 'name',
-      label: 'Name',
-      content: (rental) => (
-        <Link to={`/rentals/${rental._id}`}>{rental.customer.name}</Link>
-      ),
+      label: 'Customer',
+      content: (rental) => <Link to={`/rentals/${rental._id}`}>{rental.customer.name}</Link>,
     },
     { 
       path: 'title',
-      label: 'Title',
+      label: 'Movie',
       content: (rental) => (
         <p>{rental.movie.title}</p>
       ),

@@ -62,8 +62,8 @@ class RentalForm extends Form {
       <div className='container'>
         <h1>Rental Form</h1>
         <form onSubmit={this.handleSubmit}>
-          {this.renderInput('name', 'Name')}
-          {this.renderInput('title', 'Title')}
+          {this.renderInput('name', 'Customer')}
+          {this.renderInput('title', 'Movie')}
           {this.renderInput('quantity', 'Quantity', 'number')}
           {this.renderInput('dateOut', 'Date Out')}
           {this.renderInput('dateReturned', 'Date Returned')}
