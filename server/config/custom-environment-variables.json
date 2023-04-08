@@ -1,5 +1,0 @@
-{
-  "jwtPrivateKey": "rentals_jwtPrivateKey",
-  "db": "rentals_db",
-  "LOG_LEVEL": "LOG_LEVEL"
-}
