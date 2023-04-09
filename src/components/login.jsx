@@ -18,8 +18,9 @@ class Login extends Form {
   doSubmit = async () => {
     try {
       const { data } = this.state;
+      const loginRedirectUrl = process.env.NODE_ENV === 'production' ? 'https://comfy-profiterole-fbaf69.netlify.app/movies' : '/movies';
       auth.login(data.username, data.password).then((res) => {
-        window.location = '/movies';
+        window.location = loginRedirectUrl;
       });
       // window.location = '/movies';
     } catch (ex) {

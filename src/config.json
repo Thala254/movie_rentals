@@ -1,3 +1,4 @@
 {
-  "apiUrl": "https://movie-rentals-service.onrender.com/api"
+  "apiUrl": "https://movie-rentals-service.onrender.com/api",
+  "clientUrl": "https://comfy-profiterole-fbaf69.netlify.appi"
 }
