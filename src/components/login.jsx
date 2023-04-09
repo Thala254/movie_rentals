@@ -22,7 +22,6 @@ class Login extends Form {
       auth.login(data.username, data.password).then((res) => {
         window.location = loginRedirectUrl;
       });
-      // window.location = '/movies';
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };

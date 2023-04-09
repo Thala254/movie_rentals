@@ -12,12 +12,13 @@ const NavBar = ({ user }) => {
   return (
     <Fragment>
       <nav className='navbar navbar-expand-lg navbar-light bg-light px-3'>
+	<div className='container-fluid'>
         <Link className='navbar-brand' to='/movies'>Movie-Rentals</Link>
         <button
          className='navbar-toggler'
          type='button'
-         data-toggle='collapse'
-         data-target='#navbarNavAltMarkup'
+         data-bs-toggle='collapse'
+         data-bs-target='#navbarNavAltMarkup'
          aria-controls='navbarNavAltMarkup'
          aria-expanded='false'
          aria-label='Toggle navigation'
@@ -47,6 +48,7 @@ const NavBar = ({ user }) => {
             )}
           </div>
         </div>
+	</div>
       </nav>
       <Outlet/>
     </Fragment>
