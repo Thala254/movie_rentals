@@ -1,0 +1,7 @@
+{
+  "jwtPrivateKey": "",
+  "db": "",
+  "port": "",
+  "LOG_LEVEL": "",
+  "requiresAuth": true
+}
